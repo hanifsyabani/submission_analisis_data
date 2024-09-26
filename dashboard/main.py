@@ -3,10 +3,10 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 
-customer_data = pd.read_csv('customers_dataset.csv')
-product_data = pd.read_csv('products_dataset.csv')
+customer_data = pd.read_csv('E:\MSIB\Bangkit\SubmissionAnalisisdata\dashboard\customers_dataset.csv')
+product_data = pd.read_csv('E:\MSIB\Bangkit\SubmissionAnalisisdata\dashboard\products_dataset.csv')
+order_data = pd.read_csv('E:\MSIB\Bangkit\SubmissionAnalisisdata\dashboard\order_items_dataset.csv')
 
-order_data = pd.read_csv('order_items_dataset.csv')
 order_data_merge = pd.merge(
   left = order_data,
   right = product_data,
@@ -16,7 +16,6 @@ order_data_merge = pd.merge(
 )
 
 st.write('## E-Commerce Public Dataset')
-
 
 st.write('### Dataset')
 st.dataframe(customer_data)
@@ -34,14 +33,14 @@ with col2:
   st.pyplot(plt)
   
     
-st.header('Kota dengan Customer terbanyak')    
+st.subheader('Kota dengan Customer terbanyak')    
 plt.figure(figsize=(10,10))
 sns.countplot(x='customer_city', data=customer_data, order=customer_data['customer_city'].value_counts().iloc[:10].index)
 plt.xlabel('Customer City')
 plt.xticks(rotation=90)
 st.pyplot(plt)
 
-st.header('Persebaran Harga Produk')
+st.subheader('Persebaran Harga Produk')
 plt.figure(figsize=(16,10))
 sns.barplot(x='product_category_name', y='price', data=order_data_merge)
 plt.xticks(rotation=90)
