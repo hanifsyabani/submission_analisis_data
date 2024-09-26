@@ -3,10 +3,10 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 
-customer_data = pd.read_csv('data/customers_dataset.csv')
-product_data = pd.read_csv('data/products_dataset.csv')
+customer_data = pd.read_csv('customers_dataset.csv')
+product_data = pd.read_csv('products_dataset.csv')
 
-order_data = pd.read_csv('data/order_items_dataset.csv')
+order_data = pd.read_csv('order_items_dataset.csv')
 order_data_merge = pd.merge(
   left = order_data,
   right = product_data,
