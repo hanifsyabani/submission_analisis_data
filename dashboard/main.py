@@ -3,46 +3,88 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 
-customer_data = pd.read_csv('E:\MSIB\Bangkit\SubmissionAnalisisdata\dashboard\customers_dataset.csv')
-product_data = pd.read_csv('E:\MSIB\Bangkit\SubmissionAnalisisdata\dashboard\products_dataset.csv')
-order_data = pd.read_csv('E:\MSIB\Bangkit\SubmissionAnalisisdata\dashboard\order_items_dataset.csv')
+day_data = pd.read_csv('data/day.csv')
 
-order_data_merge = pd.merge(
-  left = order_data,
-  right = product_data,
-  how="left",
-  right_on="product_id",
-  left_on="product_id"
-)
+st.header('- Dashboard Sederhana -')
 
-st.write('## E-Commerce Public Dataset')
+st.subheader('Bike Sharing Data')
+st.dataframe(day_data)
 
-st.write('### Dataset')
-st.dataframe(customer_data)
-
-st.write('### Dataset Statistic')
-
-col1, col2 = st.columns(2)
+st.subheader("Visualisasi Hubungan cuaca(suhu, kecepatan angin, kelembaban) terhadap Total Penyewaan Sepeda Memakai Scatter Plot")
+col1, col2, col3 = st.columns(3)
 with col1:
-  st.dataframe(customer_data.describe())
-  
-with col2:
-  st.write("Persebaran Customer")
-  plt.figure(figsize=(10,10))
-  plt.pie(customer_data['customer_city'].value_counts().iloc[:10], labels=customer_data['customer_city'].value_counts().iloc[:10].index, autopct='%1.1f%%')
+  st.write('Temperature Vs. Total Penyewaan')
+  plt.figure(figsize=(6,5))
+  sns.scatterplot(x='temp', y='cnt', data=day_data)
+  plt.title('Temperature Vs. Total Penyewaan')
+  plt.xlabel('Temperature')
+  plt.ylabel('Total Penyewaan')
   st.pyplot(plt)
   
-    
-st.subheader('Kota dengan Customer terbanyak')    
-plt.figure(figsize=(10,10))
-sns.countplot(x='customer_city', data=customer_data, order=customer_data['customer_city'].value_counts().iloc[:10].index)
-plt.xlabel('Customer City')
-plt.xticks(rotation=90)
-st.pyplot(plt)
+with col2:
+  st.write('Windspeed Vs. Total Penyewaan')
+  plt.figure(figsize=(6,5))
+  sns.scatterplot(x='windspeed', y='cnt', data=day_data)
+  plt.title('Windspeed Vs. Total Penyewaan')
+  plt.xlabel('Windspeed')
+  plt.ylabel('Total Penyewaan')
+  st.pyplot(plt)
 
-st.subheader('Persebaran Harga Produk')
-plt.figure(figsize=(16,10))
-sns.barplot(x='product_category_name', y='price', data=order_data_merge)
-plt.xticks(rotation=90)
-plt.tight_layout()
+with col3:
+  st.write('Humidity Vs. Total Penyewaan')
+  plt.figure(figsize=(6,6))
+  sns.scatterplot(x='hum', y='cnt', data=day_data)
+  plt.title('Humidity Vs. Total Penyewaan')
+  plt.xlabel('Humidity')
+  plt.ylabel('Total')
+  st.pyplot(plt)
+  
+st.subheader("Visualisasi Hubungan cuaca(suhu, kecepatan angin, kelembaban) terhadap Total Penyewaan Sepeda Memakai RegPlot")
+cols1,cols2, cols3 = st.columns(3)
+with cols1:
+  st.write('Plot Regresi: Suhu vs Total Penyewaan Sepeda')
+  plt.figure(figsize=(6,5))
+  sns.regplot(x='temp', y='cnt', data=day_data, line_kws={'color': 'red'})
+  plt.title('Plot Regresi: Suhu vs Total Penyewaan Sepeda')
+  st.pyplot(plt)
+  
+with cols2:
+  st.write('Plot Regresi: Wind Speed vs Total Penyewaan Sepeda')
+  plt.figure(figsize=(6,5))
+  sns.regplot(x='windspeed', y='cnt', data=day_data, line_kws={'color': 'red'})
+  plt.title('Plot Regresi: Wind Speed vs Total Penyewaan Sepeda')
+  st.pyplot(plt)
+    
+with cols3:
+  st.write('Plot Regresi: Humidity vs Total Penyewaan Sepeda')
+  plt.figure(figsize=(6,5))
+  sns.regplot(x='hum', y='cnt', data=day_data, line_kws={'color': 'red'})
+  plt.title('Plot Regresi: Humidity vs Total Penyewaan Sepeda')
+  st.pyplot(plt)  
+
+st.caption('Berdasarkan hasil analisis dan visualisasi apakah cuaca mempengaruhi tren penyewaan sepeda. Berdasarkan hasil analisis, untuk suhu itu semakin meningkat suhu maka tingkat penyewaan sepeda semakin banyak, dibuktikan dengan menggunakan regplot garis ny semakin meningkat. Untuk kecepatan angin, penyewaan sepeda paling banyak di antara 0,1 - 0,3 semakin banyak angin mungkin pengguna semakin tidak nyaman. Sementara itu untuk kelembaban bertumpuk pada 0,4 - 1. Meskipun tidak ada pola yang jelas, ini menandakan kelembaban mungkin tidak menjadi faktor utama dalam tingkat penyewaan sepeda')
+  
+st.subheader("Perkembangan Penyewaan Sepeda Sepanjang Tahun")
+bulan = {
+    1: 'Januari',
+    2: 'Februari',
+    3: 'Maret',
+    4: 'April',
+    5: 'Mei',
+    6: 'Juni',
+    7: 'Juli',
+    8: 'Agustus',
+    9: 'September',
+    10: 'Oktober',
+    11: 'November',
+    12: 'Desember'
+}
+day_data['mnth'] = day_data['mnth'].map(bulan)
+plt.figure(figsize=(10,4))
+sns.lineplot(x='mnth', y='cnt', data=day_data)
+plt.title('Perkembangan Penyewaan Sepeda Per Bulan')
+plt.xticks(rotation=50)
+plt.xlabel('Bulan')
+plt.ylabel('Total Penyewaan')
 st.pyplot(plt)
+st.caption('Berdasarkan visualisasi tingkat penyewaaan semakin meningkat mulai dari januari sampai puncaknya di bulan Juni dan September dikarenakan cuaca yang lebih hangat sehingga memunkinkan untuk bersepeda sehingga tingkat penyewaan menjadi tinggi. Kemudian setelah September terjadi penurunan yang mungkin dikaitkan dengan perubahan cuaca menjadi lebih dingin sehingga terjadi penurunan penyewaan sepeda')
