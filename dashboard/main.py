@@ -90,16 +90,14 @@ st.pyplot(plt)
 st.caption('Berdasarkan visualisasi tingkat penyewaaan semakin meningkat mulai dari januari sampai puncaknya di bulan Juni dan September dikarenakan cuaca yang lebih hangat sehingga memunkinkan untuk bersepeda sehingga tingkat penyewaan menjadi tinggi. Kemudian setelah September terjadi penurunan yang mungkin dikaitkan dengan perubahan cuaca menjadi lebih dingin sehingga terjadi penurunan penyewaan sepeda')
 
 
-st.subheader('Tingkat Penyewaan Sepeda pada hari Libur dan Hari Biasa' )
-plt.figure(figsize=(12,4), dpi=100)
+st.subheader('Perbandingan Peminjaman Pengguna Terdaftar vs Non-terdaftar')
+plt.figure(figsize=(16,6), dpi=100)
 plt.subplot(1,2,1)
-sns.countplot(data=day_data, x='workingday')
-plt.title('Total Penyewaan Sepeda Di hari kerja')
-
-
-plt.subplot(1,2,2)
-sns.countplot(data=day_data, x='holiday')
-plt.title('Total Penyewaan Sepeda di hari Holiday')
+plt.bar(day_data['mnth'], day_data['registered'])
+plt.bar(day_data['mnth'], day_data['casual'])
+plt.title('Perbandingan Peminjaman Pengguna Terdaftar vs Non-terdaftar')
+plt.legend(['Registered', 'Casual'])
+plt.xticks(rotation=50)
 st.pyplot(plt)
 
-st.caption('Dari hasil analisis dan visualisasi, jumlah yang menyewa sepeda pada holiday itu sekitar 50 an dan yang tidak menyewa sekitar 700 an. Hal ini dikarenakan orang banyak berlibur di kota lain sehingga tingkat penyewaan sepeda menurun. Untuk hari kerja jumlah yang menyewa sangat banyak sekitar 500 an dan yang tidak menyewa sekitar 200 an. Hal ini disebabkan karena sepeda merupakan kendarann paling efektif utntuk pergi bekerja selain murah sepeda juga mempercepat perjalanan jika terjadi macet')
+st.caption('Berdasarkan hasil visualisasi diatas pengguna terdafatar lebih mendominasi walau tidak beda jauh tapi pengguna terdaftar selalu lebih tinggi di setiap bulan. Peminjaman sepeda oleh pengguna casual cenderung meningkat selama bulan musim panas (Juni hingga September), yang kemungkinan dipengaruhi oleh cuaca yang lebih baik untuk kegiatan luar ruangan dan terjadi penurunan baik pengguna terdaftar maupun tidak terdaftar yang mungkin disebabkan cuaca yang buruk diakhir tahun')
